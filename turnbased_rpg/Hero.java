@@ -1,9 +1,12 @@
 package com.mycompany.turnbased_rpg;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public abstract class Hero {
-    Random random;
+public abstract class Hero implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    protected transient Random random = new Random();
     public int hp;
     public int maxHP;
     public int minDmg;
@@ -11,6 +14,11 @@ public abstract class Hero {
     public int mana;
     public int maxMana;
     public int gold; // Currency
+
+    // RPG Stats
+    public int xp = 0;
+    public int level = 1;
+    public int xpToLevel = 50;
 
     int phalanxCooldown = 0;
     boolean thornsActive = false;
@@ -20,7 +28,8 @@ public abstract class Hero {
     // Passives can be handled in decrementCooldowns or useSkill
 
     public Hero(Random random) {
-        this.random = random;
+        if (random != null)
+            this.random = random;
         this.gold = 50; // Starting gold for each hero
     }
 
@@ -48,6 +57,31 @@ public abstract class Hero {
         }
     }
 
+    public void addXP(int amount) {
+        xp += amount;
+        System.out.println("You gained " + amount + " XP. Total XP: " + xp + "/" + xpToLevel);
+    }
+
+    public boolean checkLevelUp() {
+        return xp >= xpToLevel;
+    }
+
+    public void levelUp() {
+        while (xp >= xpToLevel) {
+            xp -= xpToLevel;
+            level++;
+            maxHP += 40;
+            maxMana += 10;
+            minDmg += 5;
+            maxDmg += 10;
+            hp = maxHP;
+            mana = maxMana;
+            xpToLevel = (int) (xpToLevel * 1.4);
+            System.out.println("You leveled up to level " + level + "!");
+            System.out.println("Stats increased! HP and Mana restored.");
+        }
+    }
+
     public void receiveDamage(int dmg) {
         hp -= dmg;
         if (hp < 0) hp = 0;
@@ -64,5 +98,16 @@ public abstract class Hero {
         int baseDmg = minDmg + random.nextInt(maxDmg - minDmg + 1);
         System.out.println("You use " + attackNames[skillIdx] + " and deal " + baseDmg + " damage!");
         enemy.receiveDamage(baseDmg);
+    }
+
+    public String getStatsString() {
+        return
+            "Class: " + getClassName() + "\n" +
+            "Level: " + level + "\n" +
+            "XP: " + xp + "/" + xpToLevel + "\n" +
+            "HP: " + hp + "/" + maxHP + "\n" +
+            "Mana: " + mana + "/" + maxMana + "\n" +
+            "Attack: " + minDmg + " - " + maxDmg + "\n" +
+            "Gold: " + gold;
     }
 }
