@@ -52,11 +52,12 @@ public class TurnBased_RPG {
     }
 
     private void startGame() {
-        System.out.println("Choose your class:");
-        System.out.println("1. Knight");
-        System.out.println("2. Mage");
-        System.out.println("3. Archer");
-        System.out.println("4. Rook");
+        System.out.println("Oh good, you're awake!"); // New starting message
+        System.out.println("Choose your character:");
+        System.out.println("1. Knight: Bjorn Ironmark The Dragonborn");
+        System.out.println("2. Mage: Aurelion Thalor Arch Mage of Winterhold");
+        System.out.println("3. Archer: Sorin Sandpiercer Nigthingale ");
+        System.out.println("4. Rook: Ghorzug Stonefist Champion of Talos");
         System.out.print("Enter your choice (1-4): ");
         String choice = scan.nextLine().trim();
         switch (choice) {
@@ -110,68 +111,68 @@ public class TurnBased_RPG {
         System.out.println("===================================");
         System.out.println("          Travel Locations         ");
         System.out.println("===================================");
-        System.out.println("1. Forest");
-        System.out.println("2. Cave");
-        System.out.println("3. Village");
-        System.out.println("4. Mountain");
-        System.out.println("5. Desert");
-        System.out.println("6. River");
-        System.out.println("7. Lake");
-        System.out.println("8. Swamp");
-        System.out.println("9. Jungle");
-        System.out.println("10. City");
+        System.out.println("1. Whiterun");
+        System.out.println("2. Riften");
+        System.out.println("3. Solitude");
+        System.out.println("4. Windhelm");
+        System.out.println("5. Bleak Falls Barrow");
+        System.out.println("6. Dwemer Ruins");
+        System.out.println("7. Blackreach");
+        System.out.println("8. The Throat of the World");
+        System.out.println("9. Falkreath Forest");
+        System.out.println("10. The Reach");
         System.out.print("Choose a location to travel to (1-10): ");
 
         String input = scan.nextLine().trim();
         switch (input) {
             case "1":
-                encounterNPC("Forest", new String[]{
-                    "Docile: Traveler", "Hostile: Goblin", "Hostile: Wolf", "Docile: Ranger", "Docile: Herbalist"
+                encounterNPC("Whiterun", new String[]{
+                    "Docile: Guard", "Docile: Merchant", "Hostile: Bandit"
                 });
                 break;
             case "2":
-                encounterNPC("Cave", new String[]{
-                    "Hostile: Troll", "Hostile: Cave Bat", "Docile: Miner", "Hostile: Cave Spider"
+                encounterNPC("Riften", new String[]{
+                    "Docile: Shopkeeper", "Hostile: Thief"
                 });
                 break;
             case "3":
-                encounterNPC("Village", new String[]{
-                    "Docile: Villager", "Docile: Shopkeeper", "Docile: Farmer", "Docile: Blacksmith"
+                encounterNPC("Solitude", new String[]{
+                    "Docile: Noble", "Hostile: Assassin"
                 });
                 break;
             case "4":
-                encounterNPC("Mountain", new String[]{
-                    "Hostile: Yeti", "Docile: Climber", "Hostile: Mountain Bandit", "Docile: Hermit"
+                encounterNPC("Windhelm", new String[]{
+                    "Docile: Blacksmith", "Hostile: Stormcloak"
                 });
                 break;
             case "5":
-                encounterNPC("Desert", new String[]{
-                    "Hostile: Sand Wraith", "Docile: Nomad", "Hostile: Scorpion", "Docile: Merchant"
+                encounterNPC("Bleak Falls Barrow", new String[]{
+                    "Hostile: Draugr", "Docile: Explorer"
                 });
                 break;
             case "6":
-                encounterNPC("River", new String[]{
-                    "Docile: Fisherman", "Hostile: River Monster", "Docile: Boatman", "Docile: Nymph"
+                encounterNPC("Dwemer Ruins", new String[]{
+                    "Hostile: Dwarven Spider", "Docile: Researcher"
                 });
                 break;
             case "7":
-                encounterNPC("Lake", new String[]{
-                    "Docile: Swimmer", "Hostile: Lake Monster", "Docile: Fisherwoman", "Docile: Merchant"
+                encounterNPC("Blackreach", new String[]{
+                    "Hostile: Falmer", "Docile: Lost Explorer"
                 });
                 break;
             case "8":
-                encounterNPC("Swamp", new String[]{
-                    "Hostile: Swamp Monster", "Docile: Hermit", "Hostile: Giant Frog", "Docile: Alchemist"
+                encounterNPC("The Throat of the World", new String[]{
+                    "Docile: Greybeard", "Hostile: Dragon"
                 });
                 break;
             case "9":
-                encounterNPC("Jungle", new String[]{
-                    "Hostile: Jungle Beast", "Docile: Explorer", "Hostile: Snake", "Docile: Botanist"
+                encounterNPC("Falkreath Forest", new String[]{
+                    "Docile: Hunter", "Hostile: Wolf"
                 });
                 break;
             case "10":
-                encounterNPC("City", new String[]{
-                    "Docile: Guard", "Docile: Merchant", "Hostile: Thief", "Docile: Noble", "Docile: Bard"
+                encounterNPC("The Reach", new String[]{
+                    "Docile: Herbalist", "Hostile: Giant"
                 });
                 break;
             default:
