@@ -12,10 +12,12 @@ public class Heroes {
     }
 
     private void initializeHeroes() {
-        heroes.add(new Knight());
-        heroes.add(new Mage());
-        heroes.add(new Archer());
-        heroes.add(new Rook());
+        // Initialize the heroes with the new classes
+        heroes.add(new Knight()); // Knight class
+        heroes.add(new Mage());   // Mage class
+        heroes.add(new Archer()); // Archer class
+        heroes.add(new Rook());   // Rook class
+        // You can add more hero classes here if needed
     }
 
     public List<Hero> getHeroes() {
