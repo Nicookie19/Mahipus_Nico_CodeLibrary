@@ -1,9 +1,11 @@
 package com.mycompany.turnbased_rpg;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class Enemy {
+public class Enemy implements Serializable {
+    private static final long serialVersionUID = 1L;
     Random random;
     int hp;
     int maxHP = 500;
@@ -39,12 +41,12 @@ public class Enemy {
 
     private void initializeEnemyNames() {
         enemyNames = new LinkedList<>();
-        enemyNames.add("Vindicator");
+        // Updated enemy names to include new types
         enemyNames.add("Goblin");
         enemyNames.add("Orc");
+        enemyNames.add("Wolf");
+        enemyNames.add("Bandit");
         enemyNames.add("Troll");
-        enemyNames.add("Skeleton");
-        enemyNames.add("Zombie");
         enemyNames.add("Vampire");
         enemyNames.add("Werewolf");
         enemyNames.add("Wyvern");
