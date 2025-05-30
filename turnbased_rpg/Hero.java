@@ -25,7 +25,18 @@ public abstract class Hero implements Serializable {
 
     public String[] attackNames = new String[5];
 
-    // Passives can be handled in decrementCooldowns or useSkill
+    // New weapon and item tables
+    public String[] weaponTable = {
+        "Steel Sword", "Elven Sword", "Glass Sword", "Daedric Sword",
+        "Hunting Bow", "Elven Bow", "Glass Bow", "Daedric Bow",
+        "Staff of Fireballs", "Staff of Ice Storms", "Staff of Healing"
+    };
+
+    public String[] itemTable = {
+        "Health Potion", "Stamina Potion", "Magicka Potion", "Fortify Health Potion",
+        "Sweetroll", "Horker Meat", "Goat Cheese", "Apple Pie",
+        "Lockpick", "Soul Gem", "Scroll of Fireball"
+    };
 
     public Hero(Random random) {
         if (random != null)
