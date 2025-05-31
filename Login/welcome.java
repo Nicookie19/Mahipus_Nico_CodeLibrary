@@ -5,12 +5,18 @@
  */
 package Login;
 
+/**
+ *
+ * @author Rj
+ */
 public class welcome extends javax.swing.JFrame {
 
+    /**
+     * Creates new form welcome
+     */
     public welcome() {
         initComponents();
-        WELL.setToolTipText("welcome" + login.getuname());
-
+        Lblwelcome.setText("WELCOME ADMIN!");
     }
 
     /**
@@ -23,193 +29,183 @@ public class welcome extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jToggleButton4 = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
-        addUser = new javax.swing.JButton();
-        deleteu = new javax.swing.JButton();
-        upuser = new javax.swing.JButton();
-        logout = new javax.swing.JButton();
-        WELL = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        WELL1 = new javax.swing.JLabel();
+        Lblwelcome = new javax.swing.JLabel();
+        add = new javax.swing.JToggleButton();
+        delete = new javax.swing.JToggleButton();
+        update = new javax.swing.JToggleButton();
+        logout = new javax.swing.JToggleButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
 
         jMenuItem2.setText("jMenuItem2");
 
+        jMenu1.setText("File");
+        jMenuBar2.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar2.add(jMenu2);
+
+        jToggleButton4.setText("Update");
+        jToggleButton4.setMaximumSize(new java.awt.Dimension(52, 23));
+        jToggleButton4.setMinimumSize(new java.awt.Dimension(52, 23));
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(500, 427));
-        setMinimumSize(new java.awt.Dimension(500, 427));
-        setPreferredSize(new java.awt.Dimension(500, 427));
-        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
-                formWindowGainedFocus(evt);
-            }
-            public void windowLostFocus(java.awt.event.WindowEvent evt) {
-            }
-        });
 
-        jPanel1.setBackground(new java.awt.Color(106, 156, 137));
-        jPanel1.setMaximumSize(new java.awt.Dimension(500, 427));
-        jPanel1.setMinimumSize(new java.awt.Dimension(500, 427));
-        jPanel1.setPreferredSize(new java.awt.Dimension(500, 427));
+        jPanel1.setBackground(new java.awt.Color(255, 153, 153));
 
-        addUser.setBackground(new java.awt.Color(255, 218, 179));
-        addUser.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        addUser.setForeground(new java.awt.Color(102, 102, 102));
-        addUser.setText("Add user");
-        addUser.addActionListener(new java.awt.event.ActionListener() {
+        Lblwelcome.setBackground(new java.awt.Color(255, 255, 255));
+        Lblwelcome.setFont(new java.awt.Font("AR BERKLEY", 1, 24)); // NOI18N
+        Lblwelcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Lblwelcome.setText("WELCOME USER");
+
+        add.setText("Add");
+        add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addUserActionPerformed(evt);
+                addActionPerformed(evt);
             }
         });
 
-        deleteu.setBackground(new java.awt.Color(255, 218, 179));
-        deleteu.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        deleteu.setForeground(new java.awt.Color(102, 102, 102));
-        deleteu.setText("Delete user");
-        deleteu.addActionListener(new java.awt.event.ActionListener() {
+        delete.setText("Delete");
+        delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteuActionPerformed(evt);
+                deleteActionPerformed(evt);
             }
         });
 
-        upuser.setBackground(new java.awt.Color(255, 218, 179));
-        upuser.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        upuser.setForeground(new java.awt.Color(102, 102, 102));
-        upuser.setText("Update user");
-        upuser.addActionListener(new java.awt.event.ActionListener() {
+        update.setText("Update");
+        update.setMaximumSize(new java.awt.Dimension(52, 23));
+        update.setMinimumSize(new java.awt.Dimension(52, 23));
+        update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                upuserActionPerformed(evt);
+                updateActionPerformed(evt);
             }
         });
 
-        logout.setBackground(new java.awt.Color(255, 218, 179));
-        logout.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        logout.setForeground(new java.awt.Color(102, 102, 102));
-        logout.setText("Log out");
+        logout.setText("Logout");
         logout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutActionPerformed(evt);
             }
         });
 
-        WELL.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        WELL.setForeground(new java.awt.Color(255, 255, 255));
-        WELL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        WELL.setText("WELCOME!");
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Login/logo-white-1.png"))); // NOI18N
-
-        WELL1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        WELL1.setForeground(new java.awt.Color(255, 255, 255));
-        WELL1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        WELL1.setText("Please select an option");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(WELL, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(97, 97, 97)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(189, 189, 189)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(addUser)
-                            .addComponent(deleteu)
-                            .addComponent(upuser)))
+                        .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(165, 165, 165)
-                        .addComponent(WELL1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(143, Short.MAX_VALUE))
+                        .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Lblwelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
-
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addUser, deleteu, upuser});
-
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(48, 48, 48)
+                .addComponent(Lblwelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(logout)
-                    .addComponent(WELL, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(WELL1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(addUser)
-                .addGap(18, 18, 18)
-                .addComponent(upuser)
-                .addGap(18, 18, 18)
-                .addComponent(deleteu)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(add)
+                    .addComponent(delete))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(update, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logout))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserActionPerformed
-        dungag dog = new dungag();
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
+        // TODO add your handling code here:
+        Adduser dog = new Adduser();
         dog.pack();
         dog.setLocationRelativeTo(null);
         dog.setVisible(true);
         this.dispose();
+    }//GEN-LAST:event_addActionPerformed
 
-    }//GEN-LAST:event_addUserActionPerformed
-//this button used to go to delete window
-    private void deleteuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteuActionPerformed
-        delete dell = new delete();
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        // TODO add your handling code here:
+        Delete dell = new Delete();
         dell.setVisible(true);
         dell.pack();
         dell.setLocationRelativeTo(null);
         this.dispose();
-        
-    }//GEN-LAST:event_deleteuActionPerformed
-//fire to add user window
-    private void upuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upuserActionPerformed
-        update user = new update();
+    }//GEN-LAST:event_deleteActionPerformed
+
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+        // TODO add your handling code here:
+        Update user = new Update();
         user.pack();
         user.setLocationRelativeTo(null);
         this.dispose();
         user.setVisible(true);
         this.dispose();
-
-    }//GEN-LAST:event_upuserActionPerformed
+    }//GEN-LAST:event_updateActionPerformed
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
+        // TODO add your handling code here:
         login log = new login();
         log.pack();
         log.setLocationRelativeTo(log);
         log.setVisible(true);
         this.dispose();
-
-
     }//GEN-LAST:event_logoutActionPerformed
-
-    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formWindowGainedFocus
-
+    
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
-
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(welcome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -219,14 +215,17 @@ public class welcome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel WELL;
-    private javax.swing.JLabel WELL1;
-    private javax.swing.JButton addUser;
-    private javax.swing.JButton deleteu;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel Lblwelcome;
+    private javax.swing.JToggleButton add;
+    private javax.swing.JToggleButton delete;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton logout;
-    private javax.swing.JButton upuser;
+    private javax.swing.JToggleButton jToggleButton4;
+    private javax.swing.JToggleButton logout;
+    private javax.swing.JToggleButton update;
     // End of variables declaration//GEN-END:variables
 }
