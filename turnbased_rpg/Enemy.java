@@ -1,16 +1,20 @@
 package com.mycompany.turnbased_rpg;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 
 public class Enemy implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    public enum Tier { WEAK, NORMAL, STRONG }
+    private Tier tier;
+
     Random random;
     int hp;
-    int maxHP = 500;
-    int minDmg = 10;
-    int maxDmg = 90;
+    int maxHP;
+    int minDmg;
+    int maxDmg;
+    int level; // Added to scale with player
 
     int gluttonyCooldown = 0;
     boolean bleedingActive = false;
@@ -19,95 +23,123 @@ public class Enemy implements Serializable {
 
     LinkedList<String> enemyNames;
     String currentName;
+    private Map<String, Runnable> specialAbilities = new HashMap<>();
+    private String selectedAbility; // Current ability for this enemy
 
-    // Unique attack names for enemies
-    String[] attackNames = new String[] {
-        "Savage Strike",        // High damage
-        "Venomous Bite",        // Chance to poison
-        "Roar",                 // Chance to stun
-        "Shadow Heal",          // Heals self
-        "Rend",                 // Bleed effect
-        "Frenzy",               // Multi-hit
-        "Gluttony"              // Steal HP (boss ability)
+    String[] attackNames = {
+        "Savage Strike", "Venomous Bite", "Roar",
+        "Shadow Heal", "Rend", "Frenzy", "Gluttony"
     };
 
     public Enemy() {
-        random = new Random();
-        hp = maxHP;
+        this(Tier.NORMAL);
+    }
+
+    public Enemy(Tier tier) {
+        this(tier, 1); // Default level 1
+    }
+
+    public Enemy(Tier tier, int playerLevel) {
+        this.tier = tier;
+        this.random = new Random();
+        this.level = playerLevel;
+        initializeStats();
         initializeEnemyNames();
-        currentName = getRandomEnemyName();
-        System.out.println("A " + currentName + " has appeared!");
+        this.currentName = getRandomEnemyName();
+        initializeSpecialAbilities();
+        selectRandomAbility();
+        // Scale stats based on player level
+        maxHP *= (1 + level * 0.1);
+        minDmg *= (1 + level * 0.1);
+        maxDmg *= (1 + level * 0.1);
+        hp = maxHP;
+        System.out.println("A " + getDisplayName() + " (Level " + level + ") has appeared!");
+    }
+
+    private void initializeStats() {
+        switch (tier) {
+            case WEAK:
+                maxHP = 50 + random.nextInt(20); // 50-70
+                minDmg = 5 + random.nextInt(5); // 5-10
+                maxDmg = 10 + random.nextInt(5); // 10-15
+                break;
+            case NORMAL:
+                maxHP = 80 + random.nextInt(30); // 80-110
+                minDmg = 10 + random.nextInt(10); // 10-20
+                maxDmg = 20 + random.nextInt(10); // 20-30
+                break;
+            case STRONG:
+                maxHP = 120 + random.nextInt(50); // 120-170
+                minDmg = 15 + random.nextInt(15); // 15-30
+                maxDmg = 30 + random.nextInt(15); // 30-45
+                break;
+        }
+        hp = maxHP;
+    }
+
+    private void initializeSpecialAbilities() {
+        specialAbilities.put("Minor Heal", () -> {
+            int heal = (int)(maxHP * 0.15);
+            hp = Math.min(hp + heal, maxHP);
+            System.out.println(currentName + " uses Minor Heal, restoring " + heal + " HP!");
+        });
+        specialAbilities.put("Poison Strike", () -> {
+            System.out.println(currentName + " inflicts poison! You lose 5 HP next turn.");
+            // Handled in takeTurn
+        });
+        specialAbilities.put("Multi Attack", () -> {
+            System.out.println(currentName + " attacks twice!");
+            // Handled in takeTurn
+        });
+    }
+
+    private void selectRandomAbility() {
+        List<String> abilityKeys = new ArrayList<>(specialAbilities.keySet());
+        selectedAbility = abilityKeys.get(random.nextInt(abilityKeys.size()));
     }
 
     private void initializeEnemyNames() {
         enemyNames = new LinkedList<>();
-        // Updated enemy names to include new types
-        enemyNames.add("Goblin");
-        enemyNames.add("Orc");
-        enemyNames.add("Wolf");
-        enemyNames.add("Bandit");
-        enemyNames.add("Troll");
-        enemyNames.add("Vampire");
-        enemyNames.add("Werewolf");
-        enemyNames.add("Wyvern");
-        enemyNames.add("Giant");
-        enemyNames.add("Demon");
-        enemyNames.add("Phantom");
-        enemyNames.add("Wraith");
-        enemyNames.add("Banshee");
-        enemyNames.add("Mummy");
-        enemyNames.add("Golem");
-        enemyNames.add("Hydra");
-        enemyNames.add("Minotaur");
-        enemyNames.add("Chimera");
-        enemyNames.add("Griffin");
-        enemyNames.add("Phoenix");
-        enemyNames.add("Kraken");
-        enemyNames.add("Cerberus");
-        enemyNames.add("Yeti");
-        enemyNames.add("Sphinx");
-        enemyNames.add("Nymph");
-        enemyNames.add("Sprite");
-        enemyNames.add("Imp");
-        enemyNames.add("Basilisk");
-        enemyNames.add("Gargoyle");
-        enemyNames.add("Harpy");
-        enemyNames.add("Manticore");
-        enemyNames.add("Centaur");
-        enemyNames.add("Cyclops");
-        enemyNames.add("Djinn");
-        enemyNames.add("Lich");
-        enemyNames.add("Ogre");
-        enemyNames.add("Satyr");
-        enemyNames.add("Selkie");
-        enemyNames.add("Succubus");
-        enemyNames.add("Wendigo");
-        enemyNames.add("Zombie Lord");
-        enemyNames.add("Dark Elf");
-        enemyNames.add("Nightmare");
-        enemyNames.add("Shade");
-        enemyNames.add("Slime");
-        enemyNames.add("Troll King");
-        enemyNames.add("Witch");
-        enemyNames.add("Harbinger");
-        enemyNames.add("Warlock");
+        
+        // Hostile enemies
+        enemyNames.addAll(Arrays.asList(
+            "Goblin", "Orc", "Wolf", "Bandit", "Troll", "Vampire",
+            "Werewolf", "Wyvern", "Giant", "Demon", "Phantom", "Wraith",
+            "Banshee", "Mummy", "Golem", "Hydra", "Minotaur", "Chimera",
+            "Griffin", "Kraken", "Cerberus", "Basilisk", "Gargoyle", "Harpy"
+        ));
+
+        // Expanded docile NPCs
+        enemyNames.addAll(Arrays.asList(
+            "Nymph", "Sprite", "Centaur", "Selkie", "Phoenix",
+            "Pixie Trickster", "Eldertree Ent", "Will-o'-Wisp",
+            "Dreamweaver", "Frost Naiad",
+            "Herbalist", "Bard", "Scholar", "Blacksmith", "Alchemist",
+            "Seer", "Ranger", "Monk", "Traveler", "Merchant"
+        ));
     }
 
     public String getCurrentName() {
         return currentName;
     }
 
-    public void changeName() {
-        currentName = getRandomEnemyName();
-    }
-
     private String getRandomEnemyName() {
         return enemyNames.get(random.nextInt(enemyNames.size()));
     }
 
+    public void changeName(String newName) {
+        if (enemyNames.contains(newName)) {
+            this.currentName = newName;
+        } else {
+            this.currentName = getRandomEnemyName();
+        }
+    }
+
     public void receiveDamage(int dmg) {
         hp -= dmg;
-        if (hp < 0) hp = 0;
+        if (hp < 0) {
+            hp = 0;
+        }
         System.out.println("Enemy (" + currentName + ") takes " + dmg + " damage.");
     }
 
@@ -115,15 +147,30 @@ public class Enemy implements Serializable {
         return hp > 0;
     }
 
-    // Use unique attacks each turn
     public void takeTurn(Hero player) {
-        if (gluttonyCooldown > 0) gluttonyCooldown--;
+        if (gluttonyCooldown > 0) {
+            gluttonyCooldown--;
+        }
 
-        // If stunned, skip turn
         if (stunnedForNextTurn) {
             System.out.println("Enemy (" + currentName + ") is stunned and cannot act!");
             stunnedForNextTurn = false;
             return;
+        }
+
+        // Apply special ability
+        if (random.nextInt(100) < 30) { // 30% chance to use ability
+            specialAbilities.get(selectedAbility).run();
+            if (selectedAbility.equals("Poison Strike")) {
+                player.receiveDamage(5); // Poison damage
+            } else if (selectedAbility.equals("Multi Attack")) {
+                for (int i = 0; i < 2; i++) {
+                    int dmg = random.nextInt(maxDmg - minDmg + 1) + minDmg;
+                    System.out.println("Enemy (" + currentName + ") attacks for " + dmg + " damage!");
+                    player.receiveDamage(dmg);
+                }
+                return;
+            }
         }
 
         int attackIdx = random.nextInt(attackNames.length);
@@ -131,66 +178,66 @@ public class Enemy implements Serializable {
 
         switch (attack) {
             case "Savage Strike":
-                int savageDmg = random.nextInt(30) + 60; // High damage
+                int savageDmg = random.nextInt(20) + 20; // Reduced damage
                 System.out.println("Enemy (" + currentName + ") uses Savage Strike and deals " + savageDmg + " damage!");
                 player.receiveDamage(savageDmg);
                 break;
             case "Venomous Bite":
-                int venomDmg = random.nextInt(30) + 25;
+                int venomDmg = random.nextInt(15) + 15;
                 System.out.println("Enemy (" + currentName + ") uses Venomous Bite and deals " + venomDmg + " damage!");
                 player.receiveDamage(venomDmg);
-                if (random.nextInt(100) < 30) {
-                    System.out.println("You have been poisoned! (You lose 10 HP at the start of your next turn)");
-                    player.hp -= 10;
-                    if (player.hp < 0) player.hp = 0;
+                if (random.nextInt(100) < 20) {
+                    System.out.println("You have been poisoned! (You lose 5 HP next turn)");
+                    player.receiveDamage(5);
                 }
                 break;
             case "Roar":
-                int roarDmg = random.nextInt(15) + 10;
+                int roarDmg = random.nextInt(10) + 5;
                 System.out.println("Enemy (" + currentName + ") uses Roar and deals " + roarDmg + " damage!");
                 player.receiveDamage(roarDmg);
-                if (random.nextInt(100) < 25) {
+                if (random.nextInt(100) < 15) {
                     System.out.println("You are stunned and will miss your next turn!");
-                    // You can implement a player stun mechanic if desired.
+                    // Implement player stun if desired
                 }
                 break;
             case "Shadow Heal":
-                int healAmt = random.nextInt(30) + 20;
+                int healAmt = random.nextInt(20) + 10;
                 hp += healAmt;
-                if (hp > maxHP) hp = maxHP;
+                if (hp > maxHP) {
+                    hp = maxHP;
+                }
                 System.out.println("Enemy (" + currentName + ") uses Shadow Heal and restores " + healAmt + " HP!");
                 break;
             case "Rend":
-                int rendDmg = random.nextInt(20) + 35;
+                int rendDmg = random.nextInt(15) + 20;
                 System.out.println("Enemy (" + currentName + ") uses Rend and deals " + rendDmg + " damage! You are bleeding!");
                 player.receiveDamage(rendDmg);
-                System.out.println("You lose 10 HP from bleeding.");
-                player.hp -= 10;
-                if (player.hp < 0) player.hp = 0;
+                System.out.println("You lose 5 HP from bleeding.");
+                player.receiveDamage(5);
                 break;
             case "Frenzy":
                 System.out.println("Enemy (" + currentName + ") uses Frenzy and strikes twice!");
                 for (int i = 0; i < 2; i++) {
-                    int frenzyDmg = random.nextInt(25) + 20;
+                    int frenzyDmg = random.nextInt(15) + 10;
                     player.receiveDamage(frenzyDmg);
                 }
                 break;
             case "Gluttony":
-                if (gluttonyCooldown == 0 && player.hp < 250) {
+                if (gluttonyCooldown == 0 && player.hp < 150) {
                     int chance = random.nextInt(100);
-                    if (chance < 40) {
-                        int steal = (int) (player.hp * 0.15);
-                        player.hp -= steal;
-                        if (player.hp < 0) player.hp = 0;
+                    if (chance < 30) {
+                        int steal = (int) (player.hp * 0.1);
+                        player.receiveDamage(steal);
                         hp += steal;
-                        if (hp > maxHP) hp = maxHP;
+                        if (hp > maxHP) {
+                            hp = maxHP;
+                        }
                         System.out.println("Enemy (" + currentName + ") uses Gluttony! Steals " + steal + " HP and heals itself.");
                         gluttonyCooldown = 4;
                     } else {
                         System.out.println("Enemy (" + currentName + ") tries to use Gluttony but fails!");
                     }
                 } else {
-                    // Fallback to a normal attack if Gluttony is on cooldown or player HP is high
                     int fallbackDmg = random.nextInt(maxDmg - minDmg + 1) + minDmg;
                     System.out.println("Enemy (" + currentName + ") attacks and deals " + fallbackDmg + " damage.");
                     player.receiveDamage(fallbackDmg);
@@ -202,5 +249,52 @@ public class Enemy implements Serializable {
                 player.receiveDamage(dmg);
                 break;
         }
+    }
+
+    public boolean isHostile() {
+        Set<String> alwaysHostile = new HashSet<>(Arrays.asList(
+            "Goblin", "Orc", "Wolf", "Bandit", "Troll", "Vampire",
+            "Werewolf", "Wyvern", "Giant", "Demon", "Phantom", "Wraith",
+            "Banshee", "Mummy", "Golem", "Hydra", "Minotaur", "Chimera",
+            "Griffin", "Kraken", "Cerberus", "Basilisk", "Gargoyle", "Harpy"
+        ));
+        return alwaysHostile.contains(currentName);
+    }
+
+    public boolean isDocile() {
+        Set<String> alwaysDocile = new HashSet<>(Arrays.asList(
+            "Nymph", "Sprite", "Centaur", "Selkie", "Phoenix",
+            "Pixie Trickster", "Eldertree Ent", "Will-o'-Wisp",
+            "Dreamweaver", "Frost Naiad",
+            "Herbalist", "Bard", "Scholar", "Blacksmith", "Alchemist",
+            "Seer", "Ranger", "Monk", "Traveler", "Merchant"
+        ));
+        return alwaysDocile.contains(currentName);
+    }
+
+    public void setHostile(boolean hostile) {
+        if (hostile == isHostile()) {
+            return; // No change needed
+        }
+        // Pick a new name from the appropriate set
+        Set<String> hostileNames = new HashSet<>(Arrays.asList(
+            "Goblin", "Orc", "Wolf", "Bandit", "Troll", "Vampire",
+            "Werewolf", "Wyvern", "Giant", "Demon", "Phantom", "Wraith",
+            "Banshee", "Mummy", "Golem", "Hydra", "Minotaur", "Chimera",
+            "Griffin", "Kraken", "Cerberus", "Basilisk", "Gargoyle", "Harpy"
+        ));
+        Set<String> docileNames = new HashSet<>(Arrays.asList(
+            "Nymph", "Sprite", "Centaur", "Selkie", "Phoenix",
+            "Pixie Trickster", "Eldertree Ent", "Will-o'-Wisp",
+            "Dreamweaver", "Frost Naiad",
+            "Herbalist", "Bard", "Scholar", "Blacksmith", "Alchemist",
+            "Seer", "Ranger", "Monk", "Traveler", "Merchant"
+        ));
+        List<String> targetNames = new ArrayList<>(hostile ? hostileNames : docileNames);
+        currentName = targetNames.get(random.nextInt(targetNames.size()));
+    }
+
+    public String getDisplayName() {
+        return (isHostile() ? "[Hostile] " : "[Friendly] ") + currentName + " (" + tier + ")";
     }
 }
