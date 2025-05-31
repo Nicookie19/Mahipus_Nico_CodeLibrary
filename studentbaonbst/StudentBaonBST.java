@@ -1,0 +1,106 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+
+package com.mycompany.studentbaonbst;
+
+public class StudentBaonBST {
+
+     private static class Node {
+        int baon;
+        Node left, right;
+
+        public Node(int baon) {
+            this.baon = baon;
+            this.left = this.right = null;
+        }
+    }
+
+    private Node root;
+
+    public StudentBaonBST() {
+        root = null;
+    }
+
+    public void insert(int baon) {
+        root = insertRec(root, baon);
+    }
+
+    private Node insertRec(Node root, int baon) {
+        if (root == null) {
+            root = new Node(baon);
+            return root;
+        }
+       
+        if (baon < root.baon) {
+            root.left = insertRec(root.left, baon);
+        } else {
+            root.right = insertRec(root.right, baon);
+        }
+        return root;
+    }
+
+    
+    public void printBaonDescending() {
+        System.out.println("Students baon arranged from highest to lowest value:");
+        printDescRec(root);
+    }
+
+    private void printDescRec(Node root) {
+        if (root == null) {
+            return;
+        }
+     
+        printDescRec(root.right);
+      
+            System.out.println(root.baon);
+        
+            printDescRec(root.left);
+    }
+
+    public void preOrder() {
+        System.out.println("Pre-order Traversal (parent -> left -> right):");
+            preOrderRec(root);
+            System.out.println();
+    }
+
+    private void preOrderRec(Node node) {
+        if (node == null) {
+            return;
+        }
+        System.out.print(node.baon + " ");
+            preOrderRec(node.left);
+            preOrderRec(node.right);
+    }
+
+    public void postOrder() {
+        System.out.println("Post-order Traversal (left -> right -> parent):");
+            postOrderRec(root);
+            System.out.println();
+    }
+
+    private void postOrderRec(Node node) {
+        if (node == null) {
+            return;
+        }
+        postOrderRec(node.left);
+            postOrderRec(node.right);
+            System.out.print(node.baon + " ");
+    }
+
+
+    public static void main(String[] args) {
+        StudentBaonBST bst = new StudentBaonBST();
+
+        int[] baons = {150, 200, 175, 340, 490, 220, 260, 310};
+
+        for (int b : baons) {
+            bst.insert(b);
+        }
+
+        bst.printBaonDescending();
+
+            bst.preOrder();
+            bst.postOrder();
+    }
+}
